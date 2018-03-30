@@ -18,6 +18,16 @@ socket.on('newEmail',function(data){
 });
 
 socket.on('newMsg',function(data){
-    console.log(data.msg);
-    
-})
+    $('#msgs').append(`<li>${data.from}: ${data.msg}</li>`)  
+});
+
+$('#message-form').submit(function(e){
+    e.preventDefault();
+    socket.emit('createMsg',{
+        from:'User',
+        msg:$('#msg').val()
+    },function(data){
+        $('#msgs').append(`<li>Me: ${$('#msg').val()}</li>`);
+        $('#msg').val(null);
+    });
+});
